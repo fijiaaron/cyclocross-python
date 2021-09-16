@@ -1,4 +1,4 @@
-# setup.py
+# util.py
 
 import os
 import sys

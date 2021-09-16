@@ -1,4 +1,4 @@
-import setup
+import util
 from uci.cyclocross.Competition import Competition
 
 from typing import List
@@ -44,7 +44,7 @@ class CompetitionResultsFrame():
 	competition_country = By.CSS_SELECTOR, "ul.uci-detail-list li:nth-of-type(2)"
 
 	def __init__(self, driver:WebDriver, url:str):
-		self.log = setup.create_logger(self.__class__.__name__)
+		self.log = util.create_logger(self.__class__.__name__)
 		self.driver = driver
 		self.wait = WebDriverWait(self.driver, self.timeout)
 		self.url = url
