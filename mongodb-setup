@@ -1,0 +1,30 @@
+// connect
+// mongo --host cyclocross.qazar.net --authenticationDatabase cyclocross -u cyclocross -p 
+
+// database
+use cyclocross 
+
+// create user
+
+db.dropUser("cyclocross")
+db.createUser({ 
+    user: "cyclocross", 
+    pwd: passwordPrompt(), 
+    roles: [ { role: "readWrite", db: "cyclocross" }] 
+})
+
+// create collections
+
+db.createCollection("disciplines")
+db.createCollection("seasons")
+db.createCollection("competitions")
+db.createCollection("events")
+
+
+db.disciplines.insert({"id":3, "discipline":"Cyclo-cross"})
+db.seasons.insert({"year": "2022"})
+db.seasons.insert({"year": "2021"})
+db.seasons.insert({"year": "2020"})
+
+// insert example 
+db.competitions.insert()

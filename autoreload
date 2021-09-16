@@ -5,4 +5,4 @@
 %aimport uci.cyclocross
 %aimport uci.cyclocross.Competition
 %aimport uci.cyclocross.ResultsFrame
-%aimport uci.cyclocross.CompetitionResultsFrame
+
