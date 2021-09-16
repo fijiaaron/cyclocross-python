@@ -1,0 +1,8 @@
+%load_ext autoreload
+%autoreload 2
+
+%aimport setup
+%aimport uci.cyclocross
+%aimport uci.cyclocross.Competition
+%aimport uci.cyclocross.ResultsFrame
+%aimport uci.cyclocross.CompetitionResultsFrame

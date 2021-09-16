@@ -1,0 +1,63 @@
+{ "competition_results" :
+    {
+		"competition_results_id" : 65009,
+		"competition_result_url" : "https://dataride.uci.org/iframe/CompetitionResults/65009?disciplineId=3",
+		"discipline_id" : 3,
+        "discipline" : "Cyclo-cross",
+		"season" : "2022",
+        "competition_type" : "Cyclo-cross",
+		"competition_name" : "New Zealand National Championships",
+		"competition_dates" : "15 Aug - 15 Aug 2021",
+		"competition_class" : "National Championships",
+		"competition_venue" : "Lower Hutt, Wellington",
+		"competition_country" : "NEW ZEALAND",
+
+		"event_results" : [
+			{
+				"event_results_id" : 253649,
+				"event_results_url" : "https://dataride.uci.org/iframe/EventResults/253649?competitionId=65009&disciplineId=3",
+				"race_type" : "Individual",
+				"race_name" : "Men Elite",
+				"race_category" : "Men Elite",
+				"race_venue" : "Lower Hutt, Wellington",
+				"race_date" : "15 Aug 2021",
+				"race_description" : "New Zealand National Championships - Men Elite - Individual - Lower Hutt, Wellington - 15 Aug 2021",
+				"race_winner" : "BURNETT Josh"
+			},
+			{
+				"event_results_id" : 253812,
+				"event_results_url" : "https://dataride.uci.org/iframe/EventResults/253812?competitionId=65009&disciplineId=3",
+				"race_type" : "Individual",
+				"race_name" : "Men Junior",
+				"race_date" : "15 Aug 2021",
+				"race_venue" : "Lower Hutt, Wellington",
+				"race_category" : "Men Junior",
+				"race_description" : "New Zealand National Championships - Men Junior - Individual - Lower Hutt, Wellington - 15 Aug 2021",
+				"race_winner" : "NICOL Coen"
+			},
+			{
+				"event_results_id" : 253658,
+				"event_results_url" : "https://dataride.uci.org/iframe/EventResults/253658?competitionId=65009&disciplineId=3",
+				"race_type" : "Individual",
+				"race_name" : "Women Elite",
+				"race_date" : "15 Aug 2021",
+				"race_venue" : "Lower Hutt, Wellington",
+				"race_category" : "Women Elite",
+				"race_description" : "New Zealand National Championships - Women Elite - Individual - Lower Hutt, Wellington - 15 Aug 2021",
+				"race_winner" : "MCILROY Kate"
+			},
+			{
+				"event_results_id" : 253838,
+				"event_results_url" : "https://dataride.uci.org/iframe/EventResults/253838?competitionId=65009&disciplineId=3",
+				"race_type" : "Individual",
+				"race_name" : "Women Junior",
+				"race_date" : "15 Aug 2021",
+				"race_venue" : "Lower Hutt, Wellington",
+				"race_category" : "Women Junior",
+				"race_description" : "New Zealand National Championships - Women Junior - Individual - Lower Hutt, Wellington - 15 Aug 2021",
+				"race_winner" : "GRAY Seana"
+			}
+
+		]
+    }
+}
