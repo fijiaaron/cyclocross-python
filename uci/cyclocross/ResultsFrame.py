@@ -1,5 +1,4 @@
 import logging
-import json
 import re
 
 from typing import List, Tuple, Dict, Set, Optional
@@ -10,6 +9,11 @@ from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webdriver import WebElement
 from selenium.webdriver.remote.webdriver import WebDriverException
+from selenium.common.exceptions import WebDriverException as WDException
+from selenium.common.exceptions import ElementNotVisibleException
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
@@ -55,6 +59,9 @@ class ResultsFrame:
 	loading_selector = (By.CSS_SELECTOR, ".k-loading-mask")
 	competition_table_row_selector = (By.CSS_SELECTOR, "#competitions table tbody tr")
 	
+	next_page_selector = (By.CSS_SELECTOR, '[title="Go to the next page"]')
+	prev_page_selector = (By.CSS_SELECTOR, '[title="Go to the previous page"]')
+	
 
 	def __init__(self, driver:WebDriver):
 		self.driver = driver
@@ -63,13 +70,11 @@ class ResultsFrame:
 		self.log.debug(f"initialized")
 
 
-	def open(self) -> ResultsFrame:
+	def open(self):
 		self.log.debug(f"open {__class__.__name__}")
 		self.driver.get(ResultsFrame.url)
 		self.wait.until(visible(self.results_heading_selector))
 		self.log.debug(f"got title: {self.driver.title}")
-
-		return self
 
 
 	def when_visible(self, locator) -> WebElement:
@@ -104,6 +109,16 @@ class ResultsFrame:
 	def choose_element_from_list(self, elements, matcher) -> WebElement:
 		return next(filter(lambda element: element.text == matcher, elements))
 
+	def wait_for_loading(self):
+		self.log.debug(f"wait for loading mask to indicate refreshed data")
+		quickwait = WebDriverWait(self.driver, 3)
+		try:
+			quickwait.until(expected.visibility_of_element_located(self.loading_selector))
+		except WebDriverException:
+			self.log.debug("loading not present")
+		finally:
+			self.wait.until_not(expected.presence_of_element_located(self.loading_selector))
+		
 
 	def select_racetype(self, racetype="All", forceSelection=False):
 		self.log.debug(f"select racetype: {racetype}")
@@ -111,6 +126,7 @@ class ResultsFrame:
 	
 		if racetype == "All" and not forceSelection:
 			self.log.debug("doing nothing - default racetype should be selected")
+			return
 
 		racetype_dropdown = self.when_clickable(self.racetype_dropdown_arrow_selector)
 
@@ -122,10 +138,8 @@ class ResultsFrame:
 		self.log.debug(f"choose racetype from racetype_options: {racetype_options}")
 		self.choose_element_from_list(racetype_options, racetype).click()
 
-		self.log.debug(f"wait loading mask indicate refreshed data")
-		self.wait.until(expected.visibility_of_element_located(self.loading_selector))
-		self.wait.until_not(expected.presence_of_element_located(self.loading_selector))
-
+		self.wait_for_loading()
+		
 	def select_category(self, category="All", forceSelection=False):
 		self.log.debug(f"select_category({category}")
 		self.category = category
@@ -144,10 +158,7 @@ class ResultsFrame:
 		self.log.debug(f"choose category from category_options: {category_options}")
 		self.choose_element_from_list(category_options, category).click()
 
-		self.log.debug(f"wait loading mask indicate refreshed data")
-		self.wait.until(expected.visibility_of_element_located(self.loading_selector))
-		self.wait.until_not(expected.presence_of_element_located(self.loading_selector))
-
+		self.wait_for_loading()
 
 	def select_season(self, season="current", forceSelection=False):
 		self.log.debug(f"select_season({season})")
@@ -168,35 +179,67 @@ class ResultsFrame:
 		self.log.debug(f"choose season from season_options: {season_options}")
 		self.choose_element_from_list(season_options, season).click()
 
-		self.log.debug(f"wait loading mask indicate refreshed data")
-		self.wait.until(expected.visibility_of_element_located(self.loading_selector))
-		self.wait.until_not(expected.presence_of_element_located(self.loading_selector))
-
+		self.wait_for_loading()
 
 	def get_results(self):
 		rows = self.when_all_visible(self.competition_table_row_selector)
-		self.log.debug("rows: {len(rows)")
-		for row in rows:
-			self.log.debug(f"row: {row.text}")
+		self.log.debug(f"total rows: {len(rows)}")
 
+		competitions = []
+
+		for row in rows:
 			cells:List[WebElement] = row.find_elements(By.TAG_NAME, "td")
 			
+			competition_url = cells[1].find_element(By.TAG_NAME, "a").get_attribute("href")
+
 			competition = {
 				"date" : cells[0].text,
 				"competition" : cells[1].text,
-				"url" : cells[1].get_attribute("href"),
+				"url" : competition_url,
+				"id" : self.id_from_url(competition_url),
 				"country" : cells[2].text,
 				"competition_class" : cells[3].text,
-				"season" : self.season 
+				"season" : self.season,
+				"race_type" : self.racetype,
+				"category" : self.category,
+				"discipline": "Cyclo-cross" 
 			}
+			
+			self.log.debug(f"competition: {competition}")
+			competitions.append(competition)
 
-			self.log.debug()
+		self.log.debug(f"total competitions: {len(competitions)}")
+		return competitions
+		
+	def go_to_next_page(self):
+		next_page = self.wait.until(present(self.next_page_selector))
+		disabled = 'disabled' in next_page.get_attribute("class")
+ 
+		if disabled:
+			return False
+		else: 
+			next_page.click()
 
+	def has_next_page(self):
+		next_page = self.wait.until(present(self.next_page_selector))
+		disabled = 'disabled' in next_page.get_attribute("class")
+		if disabled:
+			return False
+		else:
+			return True
+
+	def go_to_previous_page(self):
+		previous_page = self.wait.until(present(self.prev_page_selector))
+		disabled = 'disabled' in previous_page.get_attribute("class")
+		if disabled:
+ 			return False
+		previous_page.click()
+		
 	@staticmethod
 	def id_from_url(url):
-		match = re.search("^http.*/CompetitionResults/(\d+)/.*$", url)
+		match = re.search("^http.*/CompetitionResults/(\d+).*$", url)
 
 		if match and match.groups() and len(match.groups()) == 1:
 			return match.groups()[0]
 		else:
-			raise Exception("URL does not look like CompetitionResults")
+			raise Exception("URL does not look like CompetitionResults: {url}")
