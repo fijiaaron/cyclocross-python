@@ -1,9 +1,0 @@
- 20210906.132628.420 | get_competitions_results.py:36 | __main__ | DEBUG    | file log added: __main__.log
- 20210906.132628.421 | get_competitions_results.py:44 | __main__ | DEBUG    | created logger
-created logger
- 20210906.132628.421 | get_competitions_results.py:51 | __main__ | DEBUG    | creating WebDriver instance
-creating WebDriver instance
- 20210906.132630.493 | get_competitions_results.py:56 | __main__ | DEBUG    | creating WebDriverWait instance
-creating WebDriverWait instance
- 20210906.132630.495 | get_competitions_results.py:62 | __main__ | DEBUG    | opening uci cyclocross results page
-opening uci cyclocross results page
