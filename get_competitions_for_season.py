@@ -7,17 +7,17 @@ from time import sleep
 from selenium import webdriver
 
 from uci.cyclocross.ResultsFrame import ResultsFrame
-from uci.cyclocross.Competition import Competition
+# from uci.cyclocross.Competition import Competition
 
-import util
+from utils import setup
 
 try:
-    log = util.create_logger()
+    log = setup.create_logger()
 
     RUN_HEADLESS = os.getenv("RUN_HEADLESS")
     log.debug("RUN_HEADLESS: {RUN_HEADLESS}")
 
-    options = util.get_chrome_options()
+    options = setup.get_chrome_options()
     log.debug(f"chrome options: {options}")
     log.debug(f"headless chrome: {options.headless}")
 
@@ -44,11 +44,7 @@ try:
     competitions = page.get_results()
     log.debug(f"# of competitions: {len(competitions)}")
 
-    # only gets results from first page (40 rows)
-    # this is ok as long as we keep up since it will show newest first
-    # in the long run, we might need pagination (tricky)
-
-    # first attempt at pagination (needs tested)
+    # cycle through pagination 
 
     while page.has_next_page():
         log.debug("getting next page")
@@ -60,10 +56,10 @@ try:
 
     filename = "competitions_" + season;
 
-    with open(filename + ".json", "w") as jsonfile:
+    with open(filename + ".json", mode="w") as jsonfile:
         json.dump(competitions, jsonfile, indent=4)
 
-    with open(filename + ".csv", "w") as csvfile:
+    with open(filename + ".csv", modle="w") as csvfile:
         keys = competitions[0].keys()
         csv_writer = csv.DictWriter(csvfile, keys)
         csv_writer.writeheader()

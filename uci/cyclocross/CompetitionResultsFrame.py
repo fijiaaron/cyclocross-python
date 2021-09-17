@@ -1,9 +1,8 @@
-import util
-from uci.cyclocross.Competition import Competition
-
+from time import sleep 
 from typing import List
 
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webdriver import WebElement
 from selenium.webdriver.remote.webdriver import WebDriverException
@@ -13,21 +12,11 @@ from selenium.webdriver.support import expected_conditions
 
 expected = expected_conditions
 
-def locator(selector, by = By.CSS_SELECTOR):
-	return (by, selector)
+from utils import setup
+from utils.selenium import *
 
-def by_css(selector):
-	return locator(selector, By.CSS_SELECTOR)
+from uci.cyclocross.Competition import Competition
 
-def by_id(id):
-	return locator(id, By.ID)
-
-present = expected.presence_of_element_located
-visible = expected.visibility_of_element_located
-clickable = expected.element_to_be_clickable
-selected = expected.element_to_be_selected
-all_present = expected.presence_of_all_elements_located
-all_visible = expected.visibility_of_all_elements_located
 
 class CompetitionResultsFrame():
 
@@ -37,31 +26,72 @@ class CompetitionResultsFrame():
 	results_link = By.LINK_TEXT, "Results"
 	competition_name = By.CSS_SELECTOR , ".uci-label"
 	competition_details = By.CSS_SELECTOR, "ul.uci-detail-list li"
-	competition_type = By.CSS_SELECTOR, "ul.uci-detail-list li:nth-of-type(1)"
+	competition_discipline = By.CSS_SELECTOR, "ul.uci-detail-list li:nth-of-type(1)"
 	competition_dates = By.CSS_SELECTOR, "ul.uci-detail-list li:nth-of-type(2)"
-	competition_category = By.CSS_SELECTOR, "ul.uci-detail-list li:nth-of-type(3)"
-	competition_city = By.CSS_SELECTOR, "ul.uci-detail-list li:nth-of-type(4)"
-	competition_country = By.CSS_SELECTOR, "ul.uci-detail-list li:nth-of-type(2)"
+	competition_class = By.CSS_SELECTOR, "ul.uci-detail-list li:nth-of-type(3)"
+	competition_venue = By.CSS_SELECTOR, "ul.uci-detail-list li:nth-of-type(4)"
+	competition_country = By.CSS_SELECTOR, "ul.uci-detail-list li:nth-of-type(5)"
+
+	results_table_locator = By.CSS_SELECTOR, ".uci-table-wrapper > table"
+	table_headers_locator = By.CSS_SELECTOR, ".uci-table-wrapper > table > thead [role=columnheader]"
+	table_body_locator = locate.by_css(".uci-table-wrapper > table > tbody")
+	table_row_locator = locate.by_css(".uci-table-wrapper > table > tbody > tr[role=row]")
+
+	general_classification_link = locate.by_css("table[role=grid] > tbody > tr > td:first-of-type")
+
+	main_rows_xpath = By.XPATH, "//table[1]/tbody/tr[contains(@class, 'k-master-row')]"
+	detail_rows_xpath = By.XPATH, "//table[1]/tbody/tr[contains(@class, 'k-detail-row')]"
+
+	main_rows_locator = By.CSS_SELECTOR, ".uci-table-wrapper > table > tbody > tr.k-master-row"
+	detail_rows_locator = By.CSS_SELECTOR, ".uci-table-wrapper > table > tbody > tr.k-detail-row"
+
+	collapse_icons_locator = By.CSS_SELECTOR, ".uci-table-wrapper > table > tbody [aria-label=Collapse]"
+	expand_icons_locator = By.CSS_SELECTOR, ".uci-table-wrapper > table > tbody [aria-label=Expand]"
+
+	categories_locator = By.CSS_SELECTOR, ".uci-table-wrapper > table > tbody > tr.k-master-row > td:last-of-type"
 
 	def __init__(self, driver:WebDriver, url:str):
-		self.log = util.create_logger(self.__class__.__name__)
+		self.log = setup.create_logger(self.__class__.__name__)
 		self.driver = driver
 		self.wait = WebDriverWait(self.driver, self.timeout)
 		self.url = url
+	
+	def waiter(self, timeout=None) -> WebDriverWait:
+		if not timeout:
+			return self.wait
+		else:
+			return WebDriverWait(self.driver, timeout)
 
-	def when_visible(self, locator) -> WebElement:
+	def if_visible(self, locator, timeout=None):
+		self.log.debug(f"if_visible({locator}")
+		elements = self.when_all_visible(locator, timeout)
+		self.log.debug(f"found {len(elements)} element")
+		if len(elements) == 1:
+			return elements[0]
+		return elements
+
+	def when_visible(self, locator, timeout=None) -> WebElement:
 		self.log.debug(f"when visible {locator}")
-		element = self.wait.until(expected.visibility_of_element_located(locator))
+		wait = self.waiter(timeout)
+		element = wait.until(visible(locator))
 		self.log.debug(f"found element {element}")
+		return element
 
-	def when_all_visible(self, locator) -> List[WebElement]:
+
+	def when_all_visible(self, locator, timeout=None) -> List[WebElement]:
 		self.log.debug(f"when all visible {locator}")
-		elements = self.wait.until(expected.visibility_of_all_elements_located(locator))
+		wait = self.waiter(timeout)
+		elements = wait.until(all_visible(locator))
+		self.log.debug(f"found {len(elements)} elements")
+		return elements
 
-	def when_clickable(self, locator) -> WebElement:
+
+	def when_clickable(self, locator, timeout=None) -> WebElement:
 		self.log.debug(f"when clickable {locator}")
-		return self.wait.until(clickable(locator))
-
+		wait = self.waiter(timeout)
+		element = wait.until(clickable(locator))
+		self.log.debug(f"found element {element}")
+		return element
 
 	def open(self):
 		self.log.debug(f"open url: {self.url}")
@@ -74,57 +104,154 @@ class CompetitionResultsFrame():
 		self.competition.url = self.url
 		self.log.debug(self.competition)
 
+
 	def get_competition_name(self):
 		self.log.debug("get competition name")
 		competition_name = self.wait.until(expected.visibility_of_element_located(self.competition_name)).text
 		self.log.info(f"competition_name: {competition_name}")
 		return competition_name
 
+
 	def get_competition_details(self):
 		self.log.debug("get competition details")
 		competition_details = self.wait.until(expected.visibility_of_all_elements_located(self.competition_details))
-		competition_type = competition_details[0].text
+		competition_discipline = competition_details[0].text
 		competition_dates = competition_details[1].text
 		competition_class = competition_details[2].text
-		competition_city = competition_details[3].text
+		competition_venue = competition_details[3].text
 		competition_country = competition_details[4].text
 
-		self.log.info(f"competition_type: {competition_type}")
+		self.log.info(f"competition_discipline: {competition_discipline}")
 		self.log.info(f"competition_dates: {competition_dates}")
 		self.log.info(f"competition_class: {competition_class}")
-		self.log.info(f"competition_city: {competition_city}")
+		self.log.info(f"competition_venue: {competition_venue}")
 		self.log.info(f"competition_country: {competition_country}")
 
-		return (competition_type, competition_dates, competition_class, competition_city, competition_country)
+		return (competition_discipline, competition_dates, competition_class, competition_venue, competition_country)
 
-	def get_competition_type(self):
-		self.log.info(f"get_competition_type")
-		competition_type = self.when_visible(*self.competition_type).text
-		self.log.info(f"competition_type: {competition_type}")
-		return competition_type
+
+	def get_competition_discipline(self):
+		self.log.info(f"get_competition_discipline")
+		competition_discipline = self.when_visible(self.competition_discipline).text
+		self.log.info(f"competition_discipline: {competition_discipline}")
+		return competition_discipline
+
 
 	def get_competition_dates(self):
 		self.log.info(f"get_competition_dates")
-		competition_dates = self.when_visible(*self.competition_dates).text
+		competition_dates = self.when_visible(self.competition_dates, timeout=10).text
 		self.log.info(f"competition_dates: {competition_dates}")
 		return competition_dates
 
+
 	def get_competition_class(self):
 		self.log.info(f"get_competition_class")
-		competition_class = self.when_visible(*self.competition_class).text
+		competition_class = self.when_visible(self.competition_class, timeout=10).text
 		self.log.info(f"competition_class: {competition_class}")
 		return competition_class
 
-	def get_competition_city(self):
-		self.log.info(f"get_competition_city")
-		competition_city = self.when_visible(*self.competition_city).text
-		self.log.info(f"competition_city: {competition_city}")
-		return competition_city
+
+	def get_competition_venue(self):
+		self.log.info(f"get_competition_venue")
+		competition_venue = self.when_visible(self.competition_venue, timeout=10).text
+		self.log.info(f"competition_venue: {competition_venue}")
+		return competition_venue
+
 
 	def get_competition_country(self):
 		self.log.info(f"get_competition_country")
-		competition_country = self.when_visible(*self.competition_country).text
+		competition_country = self.when_visible(self.competition_country, timeout=10).text
 		self.log.info(f"competition_country: {competition_country}")
 		return competition_country
 
 
+	def get_table_headers(self):
+		table_headers = self.when_all_visible(self.table_headers_locator, timeout=10)
+		column_names = [header.text for header in table_headers]
+		self.log.debug(f"column_names: {column_names}")
+		return column_names 
+
+
+	def get_categories(self):
+		category_elements = self.when_all_visible(self.categories_locator, timeout=10)
+		self.log.debug(f"# of categories: {len(category_elements)}")
+		categories = [category_element.text for category_element in category_elements]
+		self.log.debug(f"categories: {categories}") 
+		return categories
+
+
+	def get_link_for_category(self, category):
+		collapsible = By.CSS_SELECTOR, '[aria-label="Collapse"]'
+		expandable = By.CSS_SELECTOR, '[aria-label="Expand"]'
+		self.expand_all_rows()
+		rows = self.wait.until(all_visible(self.detail_rows_locator), timeout=10)
+		# not done
+
+	def get_race_info(self):
+		self.log.debug(f"get_race_info()")
+		self.expand_all_rows()
+
+		main_rows = self.when_all_visible(self.main_rows_locator, timeout=1)
+		detail_rows = self.when_all_visible(self.detail_rows_locator, timeout=1)
+
+		races = []
+		for main_row in main_rows:
+			# arrow = main_row.find_element(By.CSS_SELECTOR, "td:nth-of-type(1) > a")
+
+			# the race name in the table is actually the same as category 
+			# race_name = main_row.find_element(By.CSS_SELECTOR, "td:nth-of-type(2)").text 
+
+			race_name = self.get_competition_name()
+			date = main_row.find_element(By.CSS_SELECTOR, "td:nth-of-type(3)").text
+			venue = main_row.find_element(By.CSS_SELECTOR, "td:nth-of-type(4)").text
+			category = main_row.find_element(By.CSS_SELECTOR, "td:nth-of-type(5)").text
+			
+			self.log.debug(f"race_name: {race_name}, date: {date} venue: {venue}, category: {category}")
+			
+			detail_row:WebElement = main_row.find_element(By.XPATH, "./following-sibling::tr[1]")
+			self.log.debug("got detail row: " + detail_row.text)
+			
+			link:WebElement = detail_row.find_element_by_tag_name("a")
+			event_url = link.get_attribute("href")
+			self.log.debug(f"event_url: {event_url}")
+			
+			link_locator = By.XPATH, ".//table/tbody/tr/td[2]"
+			winner_locator = By.XPATH, ".//table/tbody/tr/td[2]"
+			
+			race_link = detail_row.find_element(*link_locator).get_attribute('href')
+			self.log.debug(f"race_link {race_link}")
+			winner = detail_row.find_element(*winner_locator).text
+			self.log.debug(f"winner {winner}")
+			race = {
+				'race_name': race_name,
+				'date': date,
+				'venue': venue,
+				'category': category,
+				'event_url': event_url,
+				'winner': winner
+			}
+			races.append(race)
+
+		return races
+		#not done but working?
+
+	def expand_all_rows(self):
+		self.log.debug("expand_all_rows()")
+		try:
+			expand_links = self.when_all_visible(self.expand_icons_locator, timeout=10)
+			self.log.debug(f"expanding {len(expand_links)} rows")
+			for link in expand_links:
+				link.click()
+		except TimeoutException:
+			self.log.debug("no rows to expand")
+
+	def collapse_all_rows(self):
+		self.log.debug("collapse_all_rows")
+		
+		try:
+			collapse_links = self.when_all_visible(self.collapse_icons_locator, timeout=10)
+			self.log.debug(f"collapsing {len(collapse_links)} rows")
+			for link in collapse_links:
+				link.click()
+		except:
+			self.log.debug("no rows to collapse")

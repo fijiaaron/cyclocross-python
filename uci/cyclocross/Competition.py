@@ -3,22 +3,27 @@ import re
 
 class Competition():
 
-	def __init__(self, name=None, type=None, dates=None, _class=None, venue=None, country=None, url=None, id=None, season=None):
-		self.competition_name = name
-		self.competition_type = type
-		self.competition_dates = dates
+	def __init__(self, name=None, discipline=None, dates=None, _class=None, venue=None, country=None, season=None, url=None, id=None,):
+		self.name = name
+		self.discipline = type
+		self.dates = dates
 		self.competition_class = _class
-		self.competition_venue = venue
-		self.competition_country = country
-		self.competition_url =  url
-		self.competition_id = id
-		self.competition_season = season
+		self.venue = venue
+		self.country = country
+		self.season = season
+		self.url =  url
+		self.id = id
 
+		if url and not id:
+			self.id = self.id_from_url(url)
+		
 	def to_json(self):
 		return json.dumps(self.__dict__)
 
-	def from_json(self):
-		json.loads
+	@staticmethod
+	def from_json(self, competition_json):
+		competition_dict = json.loads(competition_json)
+		return Competition
 
 	@staticmethod
 	def url_from_id(id):

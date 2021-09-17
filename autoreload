@@ -1,8 +1,22 @@
+# setup imports
+
+import uci.cyclocross.Competition
+import uci.cyclocross.ResultsFrame
+import uci.cyclocross.CompetitionResultsFrame
+
+from utils import setup
+from utils import selenium
+from uci.cyclocross.Competition import Competition
+from uci.cyclocross.CompetitionResultsFrame import CompetitionResultsFrame
+from uci.cyclocross.ResultsFrame import ResultsFrame
+
 %load_ext autoreload
+%reload_ext autoreload
 %autoreload 2
 
-%aimport setup
-%aimport uci.cyclocross
+%aimport utils.setup
+%aimport utils.selenium
 %aimport uci.cyclocross.Competition
 %aimport uci.cyclocross.ResultsFrame
-
+%aimport uci.cyclocross.CompetitionResultsFrame
+%aimport

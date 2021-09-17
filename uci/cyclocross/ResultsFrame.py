@@ -27,7 +27,7 @@ all_present = expected.presence_of_all_elements_located
 all_visible = expected.visibility_of_all_elements_located
 any_visible = expected.visibility_of_any_elements_located
 
-import util
+from utils import setup
 
 class ResultsFrame:
 
@@ -66,7 +66,7 @@ class ResultsFrame:
 	def __init__(self, driver:WebDriver):
 		self.driver = driver
 		self.wait = WebDriverWait(self.driver, self.timeout)
-		self.log = util.create_logger(__class__.__name__)
+		self.log = setup.create_logger(__class__.__name__)
 		self.log.debug(f"initialized")
 
 

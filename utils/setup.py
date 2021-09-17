@@ -1,4 +1,4 @@
-# util.py
+# setup.py
 
 import os
 import sys
@@ -10,14 +10,12 @@ from selenium.webdriver.remote.webdriver import WebDriver
 
 
 
-
-
 def create_logger(name:str="LOG", file:str=None, console:bool=True, level:str="DEBUG"):
 	logger = logging.getLogger(name)
 	logger.setLevel(level)
 
 	datetimeFormat = '%Y%m%d.%H%M%S'
-	logFormat = ' %(asctime)s.%(msecs)03d | %(name)s | %(filename)s:%(lineno)d | %(levelname)-8.8s | %(message)s'
+	logFormat = ' %(asctime)s.%(msecs)03d | %(name)s#%(funcName)s| %(filename)s:%(lineno)d | %(levelname)-8.8s | %(message)s'
 	logFormatter = logging.Formatter(logFormat, datefmt=datetimeFormat)
 
 	if not logger.handlers:
@@ -71,7 +69,14 @@ def get_chromedriver(chrome_options:Options=None) -> WebDriver:
 	if chrome_options == None:
 		chrome_options = get_chrome_options()
 
+
 	log.debug(f"chrome_options: {chrome_options}")
 
-	driver = webdriver.Chrome(chrome_options=chrome_options)
+	if chrome_options:
+		driver = webdriver.Chrome(chrome_options=chrome_options)
+	else:
+		driver = webdriver.Chrome()
+
 	log.debug(f"driver: {driver}")
+	return driver
+	
