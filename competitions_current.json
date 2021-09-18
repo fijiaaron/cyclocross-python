@@ -1,0 +1,38 @@
+[
+    {
+        "date": "11 Sep 2021",
+        "competition": "Rapencross",
+        "url": "https://dataride.uci.org/iframe/CompetitionResults/65045?disciplineId=3",
+        "id": "65045",
+        "country": "BEL",
+        "competition_class": "C2",
+        "season": "current",
+        "race_type": "All",
+        "category": "All",
+        "discipline": "Cyclo-cross"
+    },
+    {
+        "date": "11 Sep 2021",
+        "competition": "4 Bikes Festival Cyclocross Race",
+        "url": "https://dataride.uci.org/iframe/CompetitionResults/65152?disciplineId=3",
+        "id": "65152",
+        "country": "GER",
+        "competition_class": "C2",
+        "season": "current",
+        "race_type": "All",
+        "category": "All",
+        "discipline": "Cyclo-cross"
+    },
+    {
+        "date": "15 Aug 2021",
+        "competition": "New Zealand National Championships",
+        "url": "https://dataride.uci.org/iframe/CompetitionResults/65009?disciplineId=3",
+        "id": "65009",
+        "country": "NZL",
+        "competition_class": "CN",
+        "season": "current",
+        "race_type": "All",
+        "category": "All",
+        "discipline": "Cyclo-cross"
+    }
+]

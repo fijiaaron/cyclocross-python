@@ -37,7 +37,7 @@ class CompetitionResultsFrame():
 	table_body_locator = locate.by_css(".uci-table-wrapper > table > tbody")
 	table_row_locator = locate.by_css(".uci-table-wrapper > table > tbody > tr[role=row]")
 
-	general_classification_link = locate.by_css("table[role=grid] > tbody > tr > td:first-of-type")
+	general_classification_link = By.LINK_TEXT, "General Classification"
 
 	main_rows_xpath = By.XPATH, "//table[1]/tbody/tr[contains(@class, 'k-master-row')]"
 	detail_rows_xpath = By.XPATH, "//table[1]/tbody/tr[contains(@class, 'k-detail-row')]"
@@ -179,14 +179,6 @@ class CompetitionResultsFrame():
 		self.log.debug(f"categories: {categories}") 
 		return categories
 
-
-	def get_link_for_category(self, category):
-		collapsible = By.CSS_SELECTOR, '[aria-label="Collapse"]'
-		expandable = By.CSS_SELECTOR, '[aria-label="Expand"]'
-		self.expand_all_rows()
-		rows = self.wait.until(all_visible(self.detail_rows_locator), timeout=10)
-		# not done
-
 	def get_race_info(self):
 		self.log.debug(f"get_race_info()")
 		self.expand_all_rows()
@@ -208,16 +200,22 @@ class CompetitionResultsFrame():
 			
 			self.log.debug(f"race_name: {race_name}, date: {date} venue: {venue}, category: {category}")
 			
+			
+			
 			detail_row:WebElement = main_row.find_element(By.XPATH, "./following-sibling::tr[1]")
 			self.log.debug("got detail row: " + detail_row.text)
 			
+			detail_row_wait = WebDriverWait(detail_row, 15)
+			race_link = detail_row_wait.until(expected.element_to_be_clickable(self.general_classification_link))
+			self.log.debug(f"race_link: {race_link.text} url: {race_link.get_attribute('href')}")
+
 			link:WebElement = detail_row.find_element_by_tag_name("a")
 			event_url = link.get_attribute("href")
 			self.log.debug(f"event_url: {event_url}")
 			
 			link_locator = By.XPATH, ".//table/tbody/tr/td[2]"
 			winner_locator = By.XPATH, ".//table/tbody/tr/td[2]"
-			
+
 			race_link = detail_row.find_element(*link_locator).get_attribute('href')
 			self.log.debug(f"race_link {race_link}")
 			winner = detail_row.find_element(*winner_locator).text
@@ -233,20 +231,23 @@ class CompetitionResultsFrame():
 			races.append(race)
 
 		return races
-		#not done but working?
 
 	def expand_all_rows(self):
-		self.log.debug("expand_all_rows()")
+		self.log.debug(f"expand_all_rows()")
 		try:
 			expand_links = self.when_all_visible(self.expand_icons_locator, timeout=10)
 			self.log.debug(f"expanding {len(expand_links)} rows")
 			for link in expand_links:
 				link.click()
 		except TimeoutException:
-			self.log.debug("no rows to expand")
+			self.log.debug(f"no rows to expand")
+
+		sleep(15)
+		links = self.wait.until(all_visible(self.general_classification_link))
+		self.log.debug(f"race links {len(links)}")
 
 	def collapse_all_rows(self):
-		self.log.debug("collapse_all_rows")
+		self.log.debug(f"collapse_all_rows")
 		
 		try:
 			collapse_links = self.when_all_visible(self.collapse_icons_locator, timeout=10)
@@ -254,4 +255,4 @@ class CompetitionResultsFrame():
 			for link in collapse_links:
 				link.click()
 		except:
-			self.log.debug("no rows to collapse")
+			self.log.debug(f"no rows to collapse")

@@ -1,0 +1,26 @@
+[
+    {
+        "race_name": "Rapencross",
+        "date": "11 Sep 2021",
+        "venue": "Lokeren",
+        "category": "Men Elite",
+        "event_url": "https://dataride.uci.org/iframe/EventResults/253685?competitionId=65045&disciplineId=3",
+        "winner": "ISERBYT Eli"
+    },
+    {
+        "race_name": "Rapencross",
+        "date": "11 Sep 2021",
+        "venue": "Lokeren",
+        "category": "Men Junior",
+        "event_url": "https://dataride.uci.org/iframe/EventResults/253765?competitionId=65045&disciplineId=3",
+        "winner": "CORSUS Yordi"
+    },
+    {
+        "race_name": "Rapencross",
+        "date": "11 Sep 2021",
+        "venue": "Lokeren",
+        "category": "Women Elite",
+        "event_url": "https://dataride.uci.org/iframe/EventResults/253945?competitionId=65045&disciplineId=3",
+        "winner": "BETSEMA Denise"
+    }
+]

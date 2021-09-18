@@ -7,7 +7,6 @@ from time import sleep
 from selenium import webdriver
 
 from uci.cyclocross.ResultsFrame import ResultsFrame
-# from uci.cyclocross.Competition import Competition
 
 from utils import setup
 
@@ -56,10 +55,10 @@ try:
 
     filename = "competitions_" + season;
 
-    with open(filename + ".json", mode="w") as jsonfile:
-        json.dump(competitions, jsonfile, indent=4)
+    with open(filename + ".json", mode="w", encoding="utf8") as jsonfile:
+        json.dump(competitions, jsonfile, indent=4, ensure_ascii=False)
 
-    with open(filename + ".csv", modle="w") as csvfile:
+    with open(filename + ".csv", mode="w") as csvfile:
         keys = competitions[0].keys()
         csv_writer = csv.DictWriter(csvfile, keys)
         csv_writer.writeheader()

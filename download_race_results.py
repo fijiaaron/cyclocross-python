@@ -8,6 +8,9 @@ from selenium.webdriver.support import expected_conditions
 expected = expected_conditions
 clickable = expected.element_to_be_clickable
 
+
+## need to data drive this 
+# for race in races:
 race_results_url = "https://dataride.uci.org/iframe/EventResults/253649/65009/3"
 
 export_results_menu_locator = By.CSS_SELECTOR, "#exportMenu"
@@ -33,6 +36,7 @@ competition_name = competition_link.text
 competition_url = competition_link.get_attribute("href")
 
 element = wait.until(clickable(competition_link))
+
 # download spreadsheet
 wait.until(clickable(export_results_menu_locator)).click()
 wait.until(clickable(export_to_excel_file_locator)).click()
