@@ -4,24 +4,39 @@ import json
 import csv
 
 from types import SimpleNamespace 
+
+
 from utils import setup
 from uci.cyclocross.CompetitionResultsFrame import CompetitionResultsFrame
 
-# get driver
+from selenium import webdriver
 
-options = setup.get_chrome_options(headless = False)
-driver = setup.get_chromedriver(options)
+# create logger
+log = setup.create_logger()
+
+# get driver
+chrome_options = setup.get_chrome_options()
+log.debug(f"chrome options: {chrome_options}")
+log.debug(f"headless chrome: {chrome_options.headless}")
+
+driver = webdriver.Chrome(options = chrome_options)
+log.debug("driver: {driver}")
+log.debug(f"driver capabilities: {driver.capabilities}")
 
 # get competition
 
 ## need to data drive
 ## for competition in competitions:
-competition_id = os.getenv("CX_COMPETITION_ID")
-if not competition_id:
-    print("need valid compeition id")
+COMPETITION_ID= os.getenv("CYCLOCROSS_COMPETITION_ID")
+DISCIPLINE_ID = "3" # Cyclocross
+
+if not COMPETITION_ID:
+    print("need to set CYCLOCROSS_COMPETITION_ID")
     sys.exit()
 
-competition_results_url = f"https://dataride.uci.org/iframe/CompetitionResults/{competition_id}?disciplineId=3"
+
+competition_results_url = f"https://dataride.uci.org/iframe/CompetitionResults/{COMPETITION_ID}?disciplineId={DISCIPLINE_ID}"
+print(f"getting results from  url {competition_results_url}")
 
 # get results
 page = CompetitionResultsFrame(driver, competition_results_url)

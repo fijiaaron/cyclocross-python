@@ -54,9 +54,26 @@ def get_chrome_options(headless:bool=None) -> Options:
 	headless_chrome_options.add_argument("--disable-dev-shm-usage")
 
 	# disable images
-	headless_chrome_prefs = {}
+	headless_chrome_prefs = {
+		"download.default_directory": r"C:\Users\xxx\downloads\Test",
+		"download.prompt_for_download": False,
+		"download.directory_upgrade": True,
+		"safebrowsing.enabled": True
+	}
+
 	headless_chrome_prefs["profile.default_content_settings"] = {"images": 2}
+	headless_chrome_prefs["download.default_directory"] = "/tmp"
+
+
 	headless_chrome_options.experimental_options["prefs"] = headless_chrome_prefs
+
+	chrome_options = Options()
+	chrome_options.experimental_options["prefs"] = {
+		"download.default_directory": r"/tmp",
+		"download.prompt_for_download": False,
+		"download.directory_upgrade": True,
+		"safebrowsing.enabled": False
+	}
 
 	if headless:
 		return headless_chrome_options
@@ -72,11 +89,8 @@ def get_chromedriver(chrome_options:Options=None) -> WebDriver:
 
 	log.debug(f"chrome_options: {chrome_options}")
 
-	if chrome_options:
-		driver = webdriver.Chrome(chrome_options=chrome_options)
-	else:
-		driver = webdriver.Chrome()
-
+	driver = webdriver.Chrome(chrome_options=chrome_options)
+	
 	log.debug(f"driver: {driver}")
 	return driver
 	

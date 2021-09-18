@@ -14,13 +14,13 @@ try:
     log = setup.create_logger()
 
     RUN_HEADLESS = os.getenv("RUN_HEADLESS")
-    log.debug("RUN_HEADLESS: {RUN_HEADLESS}")
+    log.debug(f"RUN_HEADLESS: {RUN_HEADLESS}")
 
-    options = setup.get_chrome_options()
-    log.debug(f"chrome options: {options}")
-    log.debug(f"headless chrome: {options.headless}")
+    chrome_options = setup.get_chrome_options()
+    log.debug(f"chrome options: {chrome_options}")
+    log.debug(f"headless chrome: {chrome_options.headless}")
 
-    driver = webdriver.Chrome(chrome_options = options)
+    driver = webdriver.Chrome(options = chrome_options)
     log.debug("driver: {driver}")
     log.debug(f"driver capabilities: {driver.capabilities}")
 

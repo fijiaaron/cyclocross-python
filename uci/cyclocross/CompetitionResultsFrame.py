@@ -181,6 +181,7 @@ class CompetitionResultsFrame():
 
 	def get_race_info(self):
 		self.log.debug(f"get_race_info()")
+		self.collapse_all_rows()
 		self.expand_all_rows()
 
 		main_rows = self.when_all_visible(self.main_rows_locator, timeout=1)
