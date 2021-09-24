@@ -5,9 +5,21 @@ import sys
 import logging
 
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.remote.webdriver import WebElement
+from selenium.webdriver.remote.webdriver import WebDriverException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.chrome.options import Options
 
+expected = expected_conditions
+present = expected.presence_of_element_located
+visible = expected.visibility_of_element_located
+clickable = expected.element_to_be_clickable
+selected = expected.element_to_be_selected
+all_present = expected.presence_of_all_elements_located
+all_visible = expected.visibility_of_all_elements_located
 
 
 def create_logger(name:str="LOG", file:str=None, console:bool=True, level:str="DEBUG"):
@@ -34,51 +46,47 @@ def create_logger(name:str="LOG", file:str=None, console:bool=True, level:str="D
 
 log = create_logger(__name__)
 
-def get_chrome_options(headless:bool=None) -> Options:
-	log.debug("get_chrome_options...")
 
-	RUN_HEADLESS = os.getenv('RUN_HEADLESS', False) in ("TRUE", "True", "true", "YES", "Yes", "yes", "1", 1, True)
-	log.debug(f"RUN_HEADLESS {RUN_HEADLESS}")
+def get_chrome_options(headless:bool=False, downloads:str="/tmp"):
+    '''
+    Get Chrome Options
+    optionally run headless
+    set downloads directory
+    
+    Args:
+        headless (bool) False - Run chrome headless
+        downloads (str) /tmp - Chrome downloads directory
+        
+    Returns:
+        Options - chrome options
+    '''
+    
+    # create chrome options
+    chrome_options = Options()
 
-	if RUN_HEADLESS and not headless:
-		log.debug(f"RUN_HEADLESS: {RUN_HEADLESS}")
-		headless = RUN_HEADLESS
-		log.debug(f"headless: {str(headless)}")
-	else:
-		log.debug(f"headless is not set")
+    # set download directory to /tmp
+    chrome_prefs = {
+        "download.default_directory": downloads,
+        "download.prompt_for_download": False,
+        "download.directory_upgrade": True,
+        "safebrowsing.enabled": True
+    }
+
+    # define headless options
+    
+    if headless:
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--disable-gpu")
+
+        # disable images
+        chrome_prefs["profile.default_content_settings"] = {"images": 2}
+        chrome_prefs["download.default_directory"] = "/tmp"
+
+    chrome_options.experimental_options["prefs"] = chrome_prefs
 
 
-	headless_chrome_options = Options()
-	headless_chrome_options.add_argument("--headless")
-	headless_chrome_options.add_argument("--no-sandbox")
-	headless_chrome_options.add_argument("--disable-dev-shm-usage")
-
-	# disable images
-	headless_chrome_prefs = {
-		"download.default_directory": r"C:\Users\xxx\downloads\Test",
-		"download.prompt_for_download": False,
-		"download.directory_upgrade": True,
-		"safebrowsing.enabled": True
-	}
-
-	headless_chrome_prefs["profile.default_content_settings"] = {"images": 2}
-	headless_chrome_prefs["download.default_directory"] = "/tmp"
-
-
-	headless_chrome_options.experimental_options["prefs"] = headless_chrome_prefs
-
-	chrome_options = Options()
-	chrome_options.experimental_options["prefs"] = {
-		"download.default_directory": r"/tmp",
-		"download.prompt_for_download": False,
-		"download.directory_upgrade": True,
-		"safebrowsing.enabled": False
-	}
-
-	if headless:
-		return headless_chrome_options
-	else:
-		return Options()
 
 def get_chromedriver(chrome_options:Options=None) -> WebDriver:
 	log.debug(f"get_chromedriver...")
