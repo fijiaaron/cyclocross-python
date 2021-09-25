@@ -13,7 +13,7 @@ from selenium.webdriver.support import expected_conditions
 expected = expected_conditions
 
 from utils import setup
-from utils.selenium import *
+from utils.selenium_helper import *
 
 from uci.cyclocross.Competition import Competition
 

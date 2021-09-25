@@ -1,0 +1,110 @@
+[
+    {
+        "date": "19 Sep 2021",
+        "competition": "GO Cross presented by Deschutes Brewery day 2",
+        "url": "https://dataride.uci.org/iframe/CompetitionResults/65046?disciplineId=3",
+        "id": "65046",
+        "country": "USA",
+        "competition_class": "C2",
+        "season": "current",
+        "race_type": "All",
+        "category": "All",
+        "discipline": "Cyclo-cross"
+    },
+    {
+        "date": "19 Sep 2021",
+        "competition": "National Trophy Series Round 1: Derby",
+        "url": "https://dataride.uci.org/iframe/CompetitionResults/65049?disciplineId=3",
+        "id": "65049",
+        "country": "GBR",
+        "competition_class": "C2",
+        "season": "current",
+        "race_type": "All",
+        "category": "All",
+        "discipline": "Cyclo-cross"
+    },
+    {
+        "date": "19 Sep 2021",
+        "competition": "Gran Premi Les Franqueses",
+        "url": "https://dataride.uci.org/iframe/CompetitionResults/65088?disciplineId=3",
+        "id": "65088",
+        "country": "ESP",
+        "competition_class": "C2",
+        "season": "current",
+        "race_type": "All",
+        "category": "All",
+        "discipline": "Cyclo-cross"
+    },
+    {
+        "date": "18 Sep 2021",
+        "competition": "Le Grand CX",
+        "url": "https://dataride.uci.org/iframe/CompetitionResults/65044?disciplineId=3",
+        "id": "65044",
+        "country": "FRA",
+        "competition_class": "C2",
+        "season": "current",
+        "race_type": "All",
+        "category": "All",
+        "discipline": "Cyclo-cross"
+    },
+    {
+        "date": "18 Sep 2021",
+        "competition": "Beringen",
+        "url": "https://dataride.uci.org/iframe/CompetitionResults/65067?disciplineId=3",
+        "id": "65067",
+        "country": "BEL",
+        "competition_class": "C2",
+        "season": "current",
+        "race_type": "All",
+        "category": "All",
+        "discipline": "Cyclo-cross"
+    },
+    {
+        "date": "18 Sep 2021",
+        "competition": "GO Cross presented by Deschutes Brewery day 1",
+        "url": "https://dataride.uci.org/iframe/CompetitionResults/65518?disciplineId=3",
+        "id": "65518",
+        "country": "USA",
+        "competition_class": "C2",
+        "season": "current",
+        "race_type": "All",
+        "category": "All",
+        "discipline": "Cyclo-cross"
+    },
+    {
+        "date": "11 Sep 2021",
+        "competition": "Rapencross",
+        "url": "https://dataride.uci.org/iframe/CompetitionResults/65045?disciplineId=3",
+        "id": "65045",
+        "country": "BEL",
+        "competition_class": "C2",
+        "season": "current",
+        "race_type": "All",
+        "category": "All",
+        "discipline": "Cyclo-cross"
+    },
+    {
+        "date": "11 Sep 2021",
+        "competition": "4 Bikes Festival Cyclocross Race",
+        "url": "https://dataride.uci.org/iframe/CompetitionResults/65152?disciplineId=3",
+        "id": "65152",
+        "country": "GER",
+        "competition_class": "C2",
+        "season": "current",
+        "race_type": "All",
+        "category": "All",
+        "discipline": "Cyclo-cross"
+    },
+    {
+        "date": "15 Aug 2021",
+        "competition": "New Zealand National Championships",
+        "url": "https://dataride.uci.org/iframe/CompetitionResults/65009?disciplineId=3",
+        "id": "65009",
+        "country": "NZL",
+        "competition_class": "CN",
+        "season": "current",
+        "race_type": "All",
+        "category": "All",
+        "discipline": "Cyclo-cross"
+    }
+]

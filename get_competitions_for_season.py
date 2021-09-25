@@ -20,7 +20,7 @@ try:
     log.debug(f"chrome options: {chrome_options}")
     log.debug(f"headless chrome: {chrome_options.headless}")
 
-    driver = webdriver.Chrome(options = chrome_options)
+    driver = setup.get_chromedriver(chrome_options = chrome_options)
     log.debug("driver: {driver}")
     log.debug(f"driver capabilities: {driver.capabilities}")
 
@@ -65,6 +65,8 @@ try:
         csv_writer.writerows(competitions)
         
 finally:
-    sleep(3)
-    driver.quit()
+    if driver:
+        log.debug("stopping chromedriver")
+        sleep(3)
+        driver.quit()
 

@@ -1,4 +1,4 @@
-# setup.py
+# utils/setup.py
 
 import os
 import sys
@@ -6,21 +6,7 @@ import logging
 
 from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
-from selenium.webdriver.remote.webdriver import WebElement
-from selenium.webdriver.remote.webdriver import WebDriverException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.chrome.options import Options
-
-expected = expected_conditions
-present = expected.presence_of_element_located
-visible = expected.visibility_of_element_located
-clickable = expected.element_to_be_clickable
-selected = expected.element_to_be_selected
-all_present = expected.presence_of_all_elements_located
-all_visible = expected.visibility_of_all_elements_located
-
 
 def create_logger(name:str="LOG", file:str=None, console:bool=True, level:str="DEBUG"):
 	logger = logging.getLogger(name)
@@ -43,11 +29,9 @@ def create_logger(name:str="LOG", file:str=None, console:bool=True, level:str="D
 
 	return logger
 
-
 log = create_logger(__name__)
 
-
-def get_chrome_options(headless:bool=False, downloads:str="/tmp"):
+def get_chrome_options(headless:bool=False, downloads:str="/tmp") -> Options:
     '''
     Get Chrome Options
     optionally run headless
@@ -85,8 +69,6 @@ def get_chrome_options(headless:bool=False, downloads:str="/tmp"):
         chrome_prefs["download.default_directory"] = "/tmp"
 
     chrome_options.experimental_options["prefs"] = chrome_prefs
-
-
 
 def get_chromedriver(chrome_options:Options=None) -> WebDriver:
 	log.debug(f"get_chromedriver...")
