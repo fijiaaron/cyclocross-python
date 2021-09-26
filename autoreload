@@ -4,8 +4,10 @@
 %autoreload 
 
 %aimport utils.setup
-%aimport utils.WebDriverPage
+%aimport utils.setup
+%aimport utils.save_helper
 %aimport utils.selenium_helper
+%aimport utils.WebDriverPage
 %aimport uci.cyclocross.Competition
 %aimport uci.cyclocross.SeasonResults
 %aimport uci.cyclocross.CompetitionResults
@@ -16,6 +18,7 @@
 from utils import setup
 from utils import WebDriverPage
 from utils.selenium_helper import *
+from utils.save_helper import *
 from uci.cyclocross.uci_helper import *
 from uci.cyclocross.Competition import Competition
 from uci.cyclocross.SeasonResults import SeasonResultsFrame

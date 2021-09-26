@@ -1,27 +1,14 @@
 from time import sleep 
 from typing import List
 
-from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.remote.webdriver import WebDriver
-from selenium.webdriver.remote.webdriver import WebElement
-from selenium.webdriver.remote.webdriver import WebDriverException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions
-
-expected = expected_conditions
-
 from utils import setup
 from utils.selenium_helper import *
+from utils import WebDriverPage
 
 from uci.cyclocross.Competition import Competition
 
 
 class CompetitionResultsFrame():
-
-	#url = "https://dataride.uci.org/iframe/CompetitionResults/65045?disciplineId=3"
-	timeout = 30
 
 	results_link = By.LINK_TEXT, "Results"
 	competition_name = By.CSS_SELECTOR , ".uci-label"
@@ -34,8 +21,8 @@ class CompetitionResultsFrame():
 
 	results_table_locator = By.CSS_SELECTOR, ".uci-table-wrapper > table"
 	table_headers_locator = By.CSS_SELECTOR, ".uci-table-wrapper > table > thead [role=columnheader]"
-	table_body_locator = locate.by_css(".uci-table-wrapper > table > tbody")
-	table_row_locator = locate.by_css(".uci-table-wrapper > table > tbody > tr[role=row]")
+	table_body_locator = By.CSS_SELECTOR, ".uci-table-wrapper > table > tbody"
+	table_row_locator = By.CSS_SELECTOR, ".uci-table-wrapper > table > tbody > tr[role=row]"
 
 	general_classification_link = By.LINK_TEXT, "General Classification"
 
@@ -51,51 +38,11 @@ class CompetitionResultsFrame():
 	categories_locator = By.CSS_SELECTOR, ".uci-table-wrapper > table > tbody > tr.k-master-row > td:last-of-type"
 
 	def __init__(self, driver:WebDriver, url:str):
-		self.log = setup.create_logger(self.__class__.__name__)
-		self.driver = driver
-		self.wait = WebDriverWait(self.driver, self.timeout)
-		self.url = url
-	
-	def waiter(self, timeout=None) -> WebDriverWait:
-		if not timeout:
-			return self.wait
-		else:
-			return WebDriverWait(self.driver, timeout)
-
-	def if_visible(self, locator, timeout=None):
-		self.log.debug(f"if_visible({locator}")
-		elements = self.when_all_visible(locator, timeout)
-		self.log.debug(f"found {len(elements)} element")
-		if len(elements) == 1:
-			return elements[0]
-		return elements
-
-	def when_visible(self, locator, timeout=None) -> WebElement:
-		self.log.debug(f"when visible {locator}")
-		wait = self.waiter(timeout)
-		element = wait.until(visible(locator))
-		self.log.debug(f"found element {element}")
-		return element
+		super().init__(driver, url)
 
 
-	def when_all_visible(self, locator, timeout=None) -> List[WebElement]:
-		self.log.debug(f"when all visible {locator}")
-		wait = self.waiter(timeout)
-		elements = wait.until(all_visible(locator))
-		self.log.debug(f"found {len(elements)} elements")
-		return elements
-
-
-	def when_clickable(self, locator, timeout=None) -> WebElement:
-		self.log.debug(f"when clickable {locator}")
-		wait = self.waiter(timeout)
-		element = wait.until(clickable(locator))
-		self.log.debug(f"found element {element}")
-		return element
-
-	def open(self):
-		self.log.debug(f"open url: {self.url}")
-		self.driver.get(self.url)
+	def open(self, url:str=None):
+		super().__open(url)
 
 		competition_name = self.get_competition_name()
 		competition_details = self.get_competition_details()
@@ -179,6 +126,7 @@ class CompetitionResultsFrame():
 		self.log.debug(f"categories: {categories}") 
 		return categories
 
+
 	def get_race_info(self):
 		self.log.debug(f"get_race_info()")
 		self.collapse_all_rows()
@@ -200,8 +148,6 @@ class CompetitionResultsFrame():
 			category = main_row.find_element(By.CSS_SELECTOR, "td:nth-of-type(5)").text
 			
 			self.log.debug(f"race_name: {race_name}, date: {date} venue: {venue}, category: {category}")
-			
-			
 			
 			detail_row:WebElement = main_row.find_element(By.XPATH, "./following-sibling::tr[1]")
 			self.log.debug("got detail row: " + detail_row.text)
@@ -233,6 +179,7 @@ class CompetitionResultsFrame():
 
 		return races
 
+
 	def expand_all_rows(self):
 		self.log.debug(f"expand_all_rows()")
 		try:
@@ -246,6 +193,7 @@ class CompetitionResultsFrame():
 		sleep(15)
 		links = self.wait.until(all_visible(self.general_classification_link))
 		self.log.debug(f"race links {len(links)}")
+
 
 	def collapse_all_rows(self):
 		self.log.debug(f"collapse_all_rows")

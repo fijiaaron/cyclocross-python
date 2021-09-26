@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webdriver import WebElement
 from selenium.webdriver.remote.webdriver import WebDriverException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
@@ -46,3 +47,35 @@ def by_link(text):
 
 def by_partial_link(text):
 	return locator(text, By.PARTIAL_LINK_TEXT)
+
+
+class Locate:
+	
+	@staticmethod
+	def locator(selector, by = By.CSS_SELECTOR):
+		return (by, selector)
+
+	@staticmethod
+	def by_id(id):
+		return locator(id, By.ID),
+
+	@staticmethod
+	def by_css(selector):
+		return locator(selector, By.CSS_SELECTOR)
+
+	@staticmethod
+	def by_xpath(xpath):
+		return locator(xpath, By.XPATH)
+
+	@staticmethod
+	def by_tag(tag):
+		return locator(tag, By.TAG_NAME)
+		
+	@staticmethod
+	def by_link(text):
+		return locator(text, By.LINK_TEXT)
+
+	@staticmethod
+	def by_partial_link(text):
+		return locator(text, By.PARTIAL_LINK_TEXT)
+
