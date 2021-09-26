@@ -16,13 +16,14 @@ selected = expected.element_located_to_be_selected
 all_present = expected.presence_of_all_elements_located
 all_visible = expected.visibility_of_all_elements_located
 alert_present = expected.alert_is_present
+text_present = expected.text_to_be_present_in_element
+value_present = expected.text_to_be_present_in_element_value
+
 # title = expected.title_is
 # title_contains = expected.title_contains
 # url = expected.url_to_be 
 # url_changes = expected.url_changes
 # url_matches = expected.url_matches
-# text = expected.text_to_be_present_in_element
-# value = expected.text_to_be_present_in_element_value
 # new_window = expected.new_window_is_opened
 # number_of_windows = expected.number_of_windows_to_be
 # stale = expected.staleness_of

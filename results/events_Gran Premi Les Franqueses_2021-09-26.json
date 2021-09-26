@@ -1,0 +1,53 @@
+[
+    {
+        "competition_url": "https://dataride.uci.org/iframe/CompetitionResults/65088?disciplineId=3",
+        "competition_id": "65088",
+        "competition_name": "Gran Premi Les Franqueses",
+        "discipline_id": "3",
+        "discipline": "Cyclo-cross",
+        "competition_dates": "19 Sep - 19 Sep 2021",
+        "competition_class": "Class 2",
+        "competition_venue": "Les Franqueses",
+        "competition_country": "SPAIN",
+        "name": "Men Elite",
+        "date": "19 Sep 2021",
+        "venue": "Les Franqueses",
+        "category": "Men Elite",
+        "url": "https://dataride.uci.org/iframe/EventResults/253921?competitionId=65088&disciplineId=3",
+        "winner": "Men Elite"
+    },
+    {
+        "competition_url": "https://dataride.uci.org/iframe/CompetitionResults/65088?disciplineId=3",
+        "competition_id": "65088",
+        "competition_name": "Gran Premi Les Franqueses",
+        "discipline_id": "3",
+        "discipline": "Cyclo-cross",
+        "competition_dates": "19 Sep - 19 Sep 2021",
+        "competition_class": "Class 2",
+        "competition_venue": "Les Franqueses",
+        "competition_country": "SPAIN",
+        "name": "Men Junior",
+        "date": "19 Sep 2021",
+        "venue": "Les Franqueses",
+        "category": "Men Junior",
+        "url": "https://dataride.uci.org/iframe/EventResults/253684?competitionId=65088&disciplineId=3",
+        "winner": "Men Elite"
+    },
+    {
+        "competition_url": "https://dataride.uci.org/iframe/CompetitionResults/65088?disciplineId=3",
+        "competition_id": "65088",
+        "competition_name": "Gran Premi Les Franqueses",
+        "discipline_id": "3",
+        "discipline": "Cyclo-cross",
+        "competition_dates": "19 Sep - 19 Sep 2021",
+        "competition_class": "Class 2",
+        "competition_venue": "Les Franqueses",
+        "competition_country": "SPAIN",
+        "name": "Women Elite",
+        "date": "19 Sep 2021",
+        "venue": "Les Franqueses",
+        "category": "Women Elite",
+        "url": "https://dataride.uci.org/iframe/EventResults/253816?competitionId=65088&disciplineId=3",
+        "winner": "Men Elite"
+    }
+]

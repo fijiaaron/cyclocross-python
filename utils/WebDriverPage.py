@@ -8,16 +8,19 @@ class WebDriverPage(object):
 
 	def __init__(self, driver:WebDriver, url=None, timeout=30):
 		self.log = setup.create_logger(__class__.__name__)
-		self.log.debug(f"initialized with driver {driver}")
 		self.driver = driver
 		self.url = url
 		self.timeout = timeout
-		self.wait = WebDriverWait(self.driver, self.timeout)
+		self.wait = WebDriverWait(self.driver, self.timeout)	
+		self.log.debug(f"initialized with driver {driver}")
 
 	def open(self, url=None):
+		self.log.debug(f"open url: {url}")
+	
 		if url:
-			self.url = url
-		if  self.url:
+			self.url = url	
+		
+		if self.url:
 			self.log.debug(f"open {self.url}")
 			self.driver.get(self.url)
 			return self
@@ -67,7 +70,7 @@ class WebDriverPage(object):
 	def when_clickable(self, locator:tuple, description="element") -> WebElement:
 		self.log.debug(f"wait until {description} clickable {locator}")
 		try:
-			element = self.wait.until(clickable)
+			element = self.wait.until(clickable(locator))
 			self.log.debug(f"found {description} {element}")
 			return element
 		except WebDriverException as e:
@@ -85,12 +88,11 @@ class WebDriverPage(object):
 			raise e
 
 	
-	def waiter(self, timeout=None) -> WebDriverWait:
+	def wait_in(self, element:WebElement, timeout=None) -> WebDriverWait:
+		self.log.debug(f"wait in element {element.tag_name} id: {element.id} class: {element.get_attribute('class')} text: {element.text}")
 		if not timeout:
-			return self.wait
-		else:
-			return WebDriverWait(self.driver, timeout)
-
+			timeout = self.timeout
+		return WebDriverWait(element, timeout)
 
 	def if_visible(self, locator, timeout=None):
 		self.log.debug(f"if_visible({locator}")

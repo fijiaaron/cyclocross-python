@@ -30,7 +30,7 @@ def create_logger(name:str="LOG", file:str=None, console:bool=True, level:str="D
 
 	# set log and date format
 	datetimeFormat = '%Y%m%d.%H%M%S'
-	logFormat = ' %(asctime)s.%(msecs)03d | %(name)s#%(funcName)s| %(filename)s:%(lineno)d | %(levelname)-8.8s | %(message)s'
+	logFormat = ' %(asctime)s.%(msecs)03d | %(levelname)-8.8s | %(name)s#%(funcName)s| %(filename)s:%(lineno)d | %(message)s'
 	logFormatter = logging.Formatter(logFormat, datefmt=datetimeFormat)
 
 	# add logging handlers -- make sure to avoid duplicates

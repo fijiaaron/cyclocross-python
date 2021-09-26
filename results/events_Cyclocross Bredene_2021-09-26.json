@@ -1,0 +1,53 @@
+[
+    {
+        "competition_url": "https://dataride.uci.org/iframe/CompetitionResults/65113?disciplineId=3",
+        "competition_id": "65113",
+        "competition_name": "Cyclocross Bredene",
+        "discipline_id": "3",
+        "discipline": "Cyclo-cross",
+        "competition_dates": "25 Sep - 25 Sep 2021",
+        "competition_class": "Class 2",
+        "competition_venue": "Bredene",
+        "competition_country": "BELGIUM",
+        "name": "Men Elite",
+        "date": "25 Sep 2021",
+        "venue": "Bredene",
+        "category": "Men Elite",
+        "url": "https://dataride.uci.org/iframe/EventResults/253978?competitionId=65113&disciplineId=3",
+        "winner": "Men Elite"
+    },
+    {
+        "competition_url": "https://dataride.uci.org/iframe/CompetitionResults/65113?disciplineId=3",
+        "competition_id": "65113",
+        "competition_name": "Cyclocross Bredene",
+        "discipline_id": "3",
+        "discipline": "Cyclo-cross",
+        "competition_dates": "25 Sep - 25 Sep 2021",
+        "competition_class": "Class 2",
+        "competition_venue": "Bredene",
+        "competition_country": "BELGIUM",
+        "name": "Men Junior",
+        "date": "25 Sep 2021",
+        "venue": "Bredene",
+        "category": "Men Junior",
+        "url": "https://dataride.uci.org/iframe/EventResults/253739?competitionId=65113&disciplineId=3",
+        "winner": "Men Elite"
+    },
+    {
+        "competition_url": "https://dataride.uci.org/iframe/CompetitionResults/65113?disciplineId=3",
+        "competition_id": "65113",
+        "competition_name": "Cyclocross Bredene",
+        "discipline_id": "3",
+        "discipline": "Cyclo-cross",
+        "competition_dates": "25 Sep - 25 Sep 2021",
+        "competition_class": "Class 2",
+        "competition_venue": "Bredene",
+        "competition_country": "BELGIUM",
+        "name": "Women Elite",
+        "date": "25 Sep 2021",
+        "venue": "Bredene",
+        "category": "Women Elite",
+        "url": "https://dataride.uci.org/iframe/EventResults/253863?competitionId=65113&disciplineId=3",
+        "winner": "Men Elite"
+    }
+]

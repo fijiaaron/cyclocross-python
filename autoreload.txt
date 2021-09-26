@@ -5,7 +5,7 @@
 
 %aimport utils.setup
 %aimport utils.setup
-%aimport utils.save_helper
+%aimport utils.file_helper
 %aimport utils.selenium_helper
 %aimport utils.WebDriverPage
 %aimport uci.cyclocross.Competition

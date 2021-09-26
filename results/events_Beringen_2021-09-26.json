@@ -1,0 +1,53 @@
+[
+    {
+        "competition_url": "https://dataride.uci.org/iframe/CompetitionResults/65067?disciplineId=3",
+        "competition_id": "65067",
+        "competition_name": "Beringen",
+        "discipline_id": "3",
+        "discipline": "Cyclo-cross",
+        "competition_dates": "18 Sep - 18 Sep 2021",
+        "competition_class": "Class 2",
+        "competition_venue": "Beringen",
+        "competition_country": "BELGIUM",
+        "name": "Men Elite",
+        "date": "18 Sep 2021",
+        "venue": "Beringen",
+        "category": "Men Elite",
+        "url": "https://dataride.uci.org/iframe/EventResults/253730?competitionId=65067&disciplineId=3",
+        "winner": "Men Elite"
+    },
+    {
+        "competition_url": "https://dataride.uci.org/iframe/CompetitionResults/65067?disciplineId=3",
+        "competition_id": "65067",
+        "competition_name": "Beringen",
+        "discipline_id": "3",
+        "discipline": "Cyclo-cross",
+        "competition_dates": "18 Sep - 18 Sep 2021",
+        "competition_class": "Class 2",
+        "competition_venue": "Beringen",
+        "competition_country": "BELGIUM",
+        "name": "Men Junior",
+        "date": "18 Sep 2021",
+        "venue": "Beringen",
+        "category": "Men Junior",
+        "url": "https://dataride.uci.org/iframe/EventResults/253859?competitionId=65067&disciplineId=3",
+        "winner": "Men Elite"
+    },
+    {
+        "competition_url": "https://dataride.uci.org/iframe/CompetitionResults/65067?disciplineId=3",
+        "competition_id": "65067",
+        "competition_name": "Beringen",
+        "discipline_id": "3",
+        "discipline": "Cyclo-cross",
+        "competition_dates": "18 Sep - 18 Sep 2021",
+        "competition_class": "Class 2",
+        "competition_venue": "Beringen",
+        "competition_country": "BELGIUM",
+        "name": "Women Elite",
+        "date": "18 Sep 2021",
+        "venue": "Beringen",
+        "category": "Women Elite",
+        "url": "https://dataride.uci.org/iframe/EventResults/254036?competitionId=65067&disciplineId=3",
+        "winner": "Men Elite"
+    }
+]

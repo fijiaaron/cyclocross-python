@@ -39,6 +39,7 @@ class SeasonResultsFrame(WebDriverPage):
 
 	def __init__(self, driver:WebDriver):
 		super().__init__(driver, SeasonResultsFrame.url)
+		self.log = setup.create_logger(__class__.__name__)
 		self.racetype = None
 		self.category = None
 		self.season = None
@@ -52,7 +53,14 @@ class SeasonResultsFrame(WebDriverPage):
 
 
 	def choose_element_from_list(self, elements, matcher) -> WebElement:
-		return next(filter(lambda element: element.text == matcher, elements))
+		self.log.debug(f"{len(elements)} elements matcher: {matcher}")
+		for element in elements:
+			self.log.debug(f"element.txt: {element.text}")
+			if element.text == matcher:
+				return element
+			else:
+				self.log.warn("no match found")
+		# return next(filter(lambda element: element.text == matcher, elements))
 
 
 	def wait_for_loading_to_clear(self):
@@ -124,7 +132,7 @@ class SeasonResultsFrame(WebDriverPage):
 
 		season_options = self.when_all_visible(self.season_options_selector)
 
-		self.log.debug(f"choose season from season_options: {season_options}")
+		self.log.debug(f"choose season from season_options: len({season_options})")
 		self.choose_element_from_list(season_options, season).click()
 
 		self.wait_for_loading_to_clear()
@@ -143,9 +151,9 @@ class SeasonResultsFrame(WebDriverPage):
 
 			competition = {
 				"date" : cells[0].text,
-				"competition" : cells[1].text,
+				"name" : cells[1].text,
 				"country_code" : cells[2].text,
-				"competition_class_code" : cells[3].text,
+				"competition_class" : cells[3].text,
 				"race_type" : self.racetype,
 				"category" : self.category,
 				"season" : self.season,
@@ -201,9 +209,3 @@ class SeasonResultsFrame(WebDriverPage):
 			return match.groups()[0]
 		else:
 			raise Exception("URL does not look like CompetitionResults: {url}")
-
-
-if __name__ == "__main__":
-	driver = None
-	url = None
-	seasonResults = SeasonResultsFrame(driver, url)

@@ -6,7 +6,7 @@ current_month = now.month
 current_year = now.year
 current_day_of_year = int(now.strftime("%j"))
 
-def get_season(season):
+def get_season(season) -> str:
     if season == "current":
         #(next year if after July)
         season = current_year
@@ -15,4 +15,4 @@ def get_season(season):
         else:
             season = str(current_year)
     
-    return season
+    return str(season)
